@@ -10,22 +10,43 @@ namespace EncryptFile
 {
     class Program
     {
+        const int IDX_TYPE = 0;
+        const int IDX_IN_FILE = 1;
+        const int IDX_PASSWORD = 2;
+        const int IDX_OUT_FILE = 3;
+
+
         static void Main(string[] args)
         {
-            // Pull in the input, password and output
-            string outFile = args[2];
+            // Decide what we want to do based on first argument 
+            if (args[IDX_TYPE] == "ENCRYPT")
+            {
+                // Read in the file we want to encrypt 
+                string inContents = File.ReadAllText(args[IDX_IN_FILE]);
 
-            // Read in the file we want to encrypt 
-            string inContents = File.ReadAllText(args[0]);
+                // Encrypt the inContents 
+                inContents = EncryptPlainTextToCipherText(inContents, args[IDX_PASSWORD]);
 
-            // Encrypt the inContents 
-            inContents = EncryptPlainTextToCipherText(inContents, args[1]);
+                // Now write back out to a file 
+                File.WriteAllText(args[IDX_OUT_FILE], inContents);
 
-            // Now write back out to a file 
-            File.WriteAllText(args[2], inContents);
+                // Print the file out again after parsing just to make sure nothing got messed up 
+                Console.WriteLine(DecryptCipherTextToPlainText(File.ReadAllText(args[IDX_OUT_FILE]), args[IDX_PASSWORD]));
+            }
+            else
+            {
+                // Read in the file we want to decrypt 
+                string inContents = File.ReadAllText(args[IDX_IN_FILE]);
 
-            // Print the file out 
-            Console.WriteLine(DecryptCipherTextToPlainText(File.ReadAllText(args[2]), args[1]));
+                // Decrypt the inContents 
+                inContents = DecryptCipherTextToPlainText(inContents, args[IDX_PASSWORD]);
+
+                // Now write back out to a file 
+                File.WriteAllText(args[IDX_OUT_FILE], inContents);
+
+                // Print the file out again after parsing just to make sure nothing got messed up 
+                Console.WriteLine(inContents);
+            }
 
             // Make the user hit a key
             Console.ReadKey();
