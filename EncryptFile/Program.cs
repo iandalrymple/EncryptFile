@@ -15,7 +15,6 @@ namespace EncryptFile
         const int IDX_PASSWORD = 2;
         const int IDX_OUT_FILE = 3;
 
-
         static void Main(string[] args)
         {
             // Decide what we want to do based on first argument 
